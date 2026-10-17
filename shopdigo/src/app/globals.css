@@ -1,0 +1,226 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+/*
+ * SHOPDIGO design tokens (see tailwind.config.ts):
+ *  brand  = royal blue for primary actions and links
+ *  navy   = header, footer and hero surfaces
+ *  accent = deals and discount badges only
+ *  success/warning/danger = status messages only
+ * Text colours target WCAG AA contrast on white (gray-600 and darker for body copy).
+ */
+:root {
+  --foreground-rgb: 17, 24, 39;
+  --background-rgb: 247, 248, 250;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-semibold px-5 py-2 rounded-lg transition-colors duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-gray-700 hover:bg-gray-100 font-medium px-4 py-2 rounded-lg transition-colors duration-200;
+  }
+  .input-field {
+    @apply w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-colors;
+  }
+  .card {
+    @apply bg-white rounded-card border border-gray-200/80 shadow-card;
+  }
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .skeleton {
+    @apply bg-gray-200/70 rounded-md;
+    background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.star-filled { color: #f59e0b; }
+.star-empty { color: #d1d5db; }
+
+/* ───────── Auth pages (login / register) motion ───────── */
+/* Transform and opacity only, so the animations stay on the compositor. Every keyframe ends at its rest state. */
+@keyframes authEnter {
+  0% { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes authFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(3deg); }
+}
+@keyframes authBob {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -5px, 0); }
+}
+@keyframes authWave {
+  0% { transform: rotate(0deg); }
+  12% { transform: rotate(-24deg); }
+  24% { transform: rotate(6deg); }
+  36% { transform: rotate(-20deg); }
+  48% { transform: rotate(5deg); }
+  60% { transform: rotate(-16deg); }
+  72% { transform: rotate(3deg); }
+  84%, 100% { transform: rotate(0deg); }
+}
+@keyframes authSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2.5deg); }
+}
+@keyframes authTwinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes authDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(10px, -8px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.auth-enter { animation: authEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.auth-enter-delay-1 { animation-delay: 0.12s; }
+.auth-enter-delay-2 { animation-delay: 0.24s; }
+.auth-float { animation: authFloat 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.auth-bob { animation: authBob 4.5s ease-in-out infinite; }
+.auth-wave { animation: authWave 3.6s ease-in-out infinite; }
+.auth-sway { animation: authSway 5s ease-in-out infinite; }
+.auth-twinkle { animation: authTwinkle 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.auth-drift { animation: authDrift 12s ease-in-out infinite; }
+
+/* Mouse parallax: JS sets --auth-px / --auth-py on the scene (desktop with a fine pointer only). */
+.auth-parallax {
+  transform: translate3d(calc(var(--auth-px, 0) * 1px), calc(var(--auth-py, 0) * 1px), 0);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Form inputs: animated focus ring and border. */
+.auth-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.95rem;
+  color: #111827;
+  transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+.auth-input::placeholder { color: #9ca3af; }
+.auth-input:hover { border-color: #9ca3af; }
+.auth-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); transform: translateY(-1px); }
+.auth-input[aria-invalid="true"] { border-color: #dc2626; }
+.auth-input[aria-invalid="true"]:focus { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.16); }
+
+/* ───────── Startup splash ───────── */
+/* Rendered in the HTML so it shows on first paint. Lifted by html[data-boot="done"] (set by AppBoot). */
+#shopdigo-splash {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: radial-gradient(ellipse at 50% 0%, #eff6ff 0%, #ffffff 55%, #eef2ff 100%);
+}
+html[data-boot="done"] #shopdigo-splash {
+  animation: splashOut 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+@keyframes splashOut { to { opacity: 0; visibility: hidden; } }
+@keyframes splashIn {
+  0% { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.92); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes splashBar {
+  0% { transform: translate3d(-100%, 0, 0); }
+  100% { transform: translate3d(222%, 0, 0); }
+}
+@keyframes splashFade { to { opacity: 1; } }
+
+/* Logo reveal: symbol first, then the wordmark, then the tagline. Total about 1.2s. */
+.sd-mark { transform-box: fill-box; transform-origin: 50% 50%; animation: sdMark 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.sd-word { animation: sdReveal 0.65s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both; }
+.sd-digo { animation: sdDigo 0.5s ease-out 0.85s both; }
+.sd-tag { animation: sdFade 0.45s ease-out 1.1s both; }
+.sd-dot { transform-box: fill-box; transform-origin: 50% 50%; animation: sdDot 1.8s ease-in-out 1.2s infinite; }
+@keyframes sdMark {
+  from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.86); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes sdReveal {
+  from { opacity: 0; clip-path: inset(0 100% 0 0); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes sdDigo {
+  from { opacity: 0.4; transform: translate3d(6px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes sdFade { from { opacity: 0; transform: translate3d(0, 4px, 0); } to { opacity: 1; transform: none; } }
+@keyframes sdDot { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+
+.splash-stage { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+.splash-logo { width: 220px; }
+.splash-bar { position: relative; width: 180px; height: 4px; border-radius: 9999px; background: #dbeafe; overflow: hidden; }
+.splash-bar span {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 45%; border-radius: inherit;
+  background: linear-gradient(90deg, #60a5fa 0%, #2563eb 50%, #FBBF24 100%);
+  animation: splashBar 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.splash-text { font-size: 0.875rem; color: #4b5563; letter-spacing: 0.01em; animation: splashIn 0.8s 0.25s both; }
+.splash-slow { font-size: 0.8rem; color: #6b7280; opacity: 0; animation: splashFade 0.4s 4s forwards; }
+.splash-reload { font-size: 0.8rem; color: #1d4ed8; text-decoration: underline; opacity: 0; animation: splashFade 0.4s 10s forwards; }
+@media (min-width: 640px) {
+  .splash-logo { width: 260px; }
+  .splash-bar { width: 220px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-bar span { animation: none; left: 0; width: 100%; opacity: 0.45; }
+  .splash-text, .splash-logo, .sd-mark, .sd-word, .sd-digo, .sd-tag, .sd-dot { animation: none !important; }
+}
